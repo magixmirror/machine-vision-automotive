@@ -1,115 +1,75 @@
 import cv2
+import mediapipe as mp
 import time
-import os
-import HandTrackingModule as htm
 
-wCam, hCam = 640, 480
 
-cap = cv2.VideoCapture(0)
-cap.set(3, wCam)
-cap.set(4, hCam)
+class handDetector():
+    def __init__(self, mode=False, maxHands=2, modelComplexity=1, detectionCon=0.5, trackCon=0.5):
+        self.mode = mode
+        self.maxHands = maxHands
+        self.modelComplexity = modelComplexity
+        self.detectionCon = detectionCon
+        self.trackCon = trackCon
 
-# folderPath = "Images"
-# myCalc = os.listdir(folderPath)
-#
-# overlayList = []
-# for imPath in myCalc:
-#     image = cv2.imread(f'{folderPath}/{imPath}')
-#     overlayList.append(image)
+        self.mpHands = mp.solutions.hands
+        self.hands = self.mpHands.Hands(self.mode, self.maxHands, self.modelComplexity, self.detectionCon, self.trackCon)
+        self.mpDraw = mp.solutions.drawing_utils
 
-pTime = 0
+    def findHands(self, img, draw=True):
+        imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        self.results = self.hands.process(imgRGB)
+        #print(results.multi_hand_landmarks)
 
-detector = htm.handDetector(detectionCon=0.75)
+        if self.results.multi_hand_landmarks:
+            for handLms in self.results.multi_hand_landmarks:
+                if draw:
+                    self.mpDraw.draw_landmarks(img, handLms, self.mpHands.HAND_CONNECTIONS)
+        return img
 
-tipIds = [4, 8, 12, 16, 20]
+    def findPosition(self, img, handNo=0, draw=True):
 
-res = 0
+        lmList = []
+        if self.results.multi_hand_landmarks:
+            myHand = self.results.multi_hand_landmarks[handNo]
 
-currTime = time.time()
+            for id, lm in enumerate(myHand.landmark):
+                # print(id, lm)
+                h, w, c = img.shape
+                cx, cy = int(lm.x * w), int(lm.y * h)
+                # print(id, cx, cy)
+                lmList.append([id, cx, cy])
+                # if draw:
+                cv2.circle(img, (cx, cy), 6, (163, 131, 0), cv2.FILLED)
 
-function = "add"
+        return lmList
 
-while True:
-    success, img = cap.read()
-    img = detector.findHands(img)
-    lmList = detector.findPosition(img, draw=False)
 
-    if len(lmList) != 0:
-        fingers = []
+def main():
+    pTime = 0
+    cTime = 0
+    cap = cv2.VideoCapture(0)
+    detector = handDetector()
 
-        # Right Thumb
-        if lmList[tipIds[0]][1] > lmList[tipIds[0] - 1][1]:
-            fingers.append(1)
-        else:
-            fingers.append(0)
+    while True:
+        success, img = cap.read()
+        img = detector.findHands(img)
+        lmList = detector.findPosition(img)
+        if len(lmList) != 0:
+            print(lmList[4])
 
-        # Right 4 Fingers
-        for id in range(1, 5):
-            if lmList[tipIds[id]][2] < lmList[tipIds[id] - 2][2]:
-                fingers.append(1)
-            else:
-                fingers.append(0)
+        cTime = time.time()
+        fps = 1 / (cTime - pTime)
+        pTime = cTime
 
-        if time.time() - currTime >= 2:
-            # NONE UP (RESET)
-            if fingers == [0, 0, 0, 0, 0]:
-                res = 0
-                print("RESET")
+        cv2.putText(img, str(int(fps)), (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 3, (255, 0, 255), 3)
 
-            # THUMB UP (ADD)
-            elif fingers == [1, 0, 0, 0, 0]:
-                function = "add"
-                print("ADD")
+        cv2.imshow("Image", img)
+        cv2.waitKey(1)
 
-            # PINKY UP (SUB)
-            elif fingers == [0, 0, 0, 0, 1]:
-                function = "sub"
-                print("SUB")
+        # Exit window 49:39
+        if cv2.getWindowProperty('Image', 4) < 1:
+            break
 
-            # THUMB & PINKY UP (MUL)
-            elif fingers == [1, 0, 0, 0, 1]:
-                function = "mul"
-                print("MUL")
 
-            # POINTER & PINKY UP (DIV)
-            elif fingers == [0, 1, 0, 0, 1]:
-                function = "div"
-                print("DIV")
-
-            else:
-                totalFingers = fingers.count(1)
-
-                if function == "add":
-                    res += totalFingers
-                elif function == "sub":
-                    res -= totalFingers
-                elif function == "mul":
-                    res *= totalFingers
-                elif function == "div":
-                    res /= totalFingers
-
-                function = "null"
-
-            # print(res)
-            currTime = time.time()
-
-        # h, w, c = overlayList[0].shape
-        # img[10:h+10, 10:w+10] = overlayList[0]
-
-    cv2.rectangle(img, (20, 225), (170, 425), (0, 255, 0), cv2.FILLED)
-    cv2.putText(img, str(res), (25, 375), cv2.FONT_HERSHEY_PLAIN,
-                10, (255, 0, 0), 25)
-
-    cTime = time.time()
-    fps = 1 / (cTime - pTime)
-    pTime = cTime
-
-    cv2.putText(img, f'FPS: {int(fps)}', (400, 70), cv2.FONT_HERSHEY_PLAIN,
-                3, (255, 0, 0), 3)
-
-    cv2.imshow("Image", img)
-    cv2.waitKey(1)
-
-    # Exit window 49:20 Chapter 2
-    if cv2.getWindowProperty('Image', 4) < 1:
-        break
+if __name__ == "__main__":
+    main()
