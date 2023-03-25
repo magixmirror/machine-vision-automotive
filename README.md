@@ -12,11 +12,11 @@
 
 <div align="center">
 
-**[PROJECT PHILOSOPHY](https://github.com/emma-t/007Secure#-project-challenges) • 
-[TECH STACK](https://github.com/emma-t/007Secure#-tech-stack) • 
-[CONTRIBUTING](https://github.com/emma-t/007Secure#%EF%B8%8F-contributing) • 
-[SPREAD THE WORD](https://github.com/emma-t/007Secure#-spread-the-word) • 
-[LICENSE](https://github.com/emma-t/007Secure#%EF%B8%8F-license)**
+**[PROJECT PHILOSOPHY](https://github.com/emma-t/Computer-Vision-Calculator#-project-challenges) • 
+[TECH STACK](https://github.com/emma-t/Computer-Vision-Calculator#-tech-stack) • 
+[CONTRIBUTING](https://github.com/emma-t/Computer-Vision-Calculator#%EF%B8%8F-contributing) • 
+[SPREAD THE WORD](https://github.com/emma-t/Computer-Vision-Calculator#-spread-the-word) • 
+[LICENSE](https://github.com/emma-t/Computer-Vision-Calculator#%EF%B8%8F-license)**
 
 </div>
 
