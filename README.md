@@ -13,16 +13,13 @@
 <div align="center">
 
 **[PROJECT PHILOSOPHY](https://github.com/emma-t/Computer-Vision-Calculator#-project-challenges) • 
-[TECH STACK](https://github.com/emma-t/Computer-Vision-Calculator#-tech-stack) • 
-[CONTRIBUTING](https://github.com/emma-t/Computer-Vision-Calculator#%EF%B8%8F-contributing) • 
-[SPREAD THE WORD](https://github.com/emma-t/Computer-Vision-Calculator#-spread-the-word) • 
-[LICENSE](https://github.com/emma-t/Computer-Vision-Calculator#%EF%B8%8F-license)**
+[TECH STACK](https://github.com/emma-t/Computer-Vision-Calculator#-tech-stack)**
 
 </div>
 
 <br />
 
-# 🧐 Project challenges
+# 🧐 Project philosophy
 
 I am learning Machine Learning and Computer Vision. This is a personal project to learn those with OpenCV. With only your right hand, you can add, subtract, multiply, and divide numbers using your computer camera.
 
@@ -33,15 +30,3 @@ Here's a brief high-level overview of the tech stack the Computer Vision Calcula
 - Python
 - OpenCV
 
-# ✍️ Contributing
-Interested in contributing to the Computer Vision Calculator project? Thanks so much for your interest! We are always looking for improvements to the project and contributions from open-source developers are greatly appreciated.
-
-# 🌟 Spread the word!
-
-If you want to say thank you and/or support active development of this project:
-- Add a GitHub Star to the project 
-
-# ⚠️ License
-The Computer Vision Calculator is available under the MIT license. See the LICENSE file for more info.
-
-<br />
