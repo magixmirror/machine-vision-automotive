@@ -29,4 +29,5 @@ Here's a brief high-level overview of the tech stack the Computer Vision Calcula
 
 - Python
 - OpenCV
+- Pycharm
 
